@@ -2,13 +2,14 @@ import 'package:flutter/material.dart';
 
 import 'package:to_do/home.dart';
 import 'package:to_do/task.dart';
-import 'util.dart';
+import 'package:to_do/theme/color_custom.dart';
 
 class BottomNavigationBarApp extends StatelessWidget {
   final int bottomNavigationBarIndex;
   final BuildContext context;
-
-  const BottomNavigationBarApp(this.context, this.bottomNavigationBarIndex);
+  const BottomNavigationBarApp(
+      {Key? key, required this.bottomNavigationBarIndex, required this.context})
+      : super(key: key);
 
   void onTabTapped(int index) {
     Navigator.of(context).push(
@@ -24,30 +25,31 @@ class BottomNavigationBarApp extends StatelessWidget {
       currentIndex: bottomNavigationBarIndex,
       type: BottomNavigationBarType.fixed,
       selectedFontSize: 10,
-      selectedLabelStyle: TextStyle(color: CustomColors.BlueDark),
-      selectedItemColor: CustomColors.BlueDark,
+      selectedLabelStyle:
+          TextStyle(color: Theme.of(context).colorScheme.blueDark),
+      selectedItemColor: Theme.of(context).colorScheme.blueDark,
       unselectedFontSize: 10,
       items: [
         BottomNavigationBarItem(
           icon: Container(
-            margin: EdgeInsets.only(bottom: 5),
+            margin: const EdgeInsets.only(bottom: 5),
             child: Image.asset(
               'assets/images/home.png',
               color: (bottomNavigationBarIndex == 0)
-                  ? CustomColors.BlueDark
-                  : CustomColors.TextGrey,
+                  ? Theme.of(context).colorScheme.blueDark
+                  : Theme.of(context).colorScheme.textGrey,
             ),
           ),
           label: 'Home',
         ),
         BottomNavigationBarItem(
           icon: Container(
-            margin: EdgeInsets.only(bottom: 5),
+            margin: const EdgeInsets.only(bottom: 5),
             child: Image.asset(
               'assets/images/task.png',
               color: (bottomNavigationBarIndex == 1)
-                  ? CustomColors.BlueDark
-                  : CustomColors.TextGrey,
+                  ? Theme.of(context).colorScheme.blueDark
+                  : Theme.of(context).colorScheme.textGrey,
             ),
           ),
           label: 'Task',

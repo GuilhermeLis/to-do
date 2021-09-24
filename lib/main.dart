@@ -1,10 +1,12 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'package:to_do/onboarding.dart';
+import 'package:to_do/theme/theme.dart';
 import 'util.dart';
 
-void main() => runApp(App());
+void main() => runApp(const App());
 
 class App extends StatefulWidget {
   const App({Key? key}) : super(key: key);
@@ -14,6 +16,8 @@ class App extends StatefulWidget {
 }
 
 class _AppState extends State<App> {
+  final Future<FirebaseApp> _initialization = Firebase.initializeApp();
+
   @override
   void initState() {
     SystemChrome.setSystemUIOverlayStyle(
@@ -27,13 +31,26 @@ class _AppState extends State<App> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        canvasColor: CustomColors.GreyBackground,
-        fontFamily: 'rubik',
-      ),
-      home: Onboarding(),
+    return FutureBuilder(
+      future: _initialization,
+      builder: (context, snapshot) {
+        // Check for errors
+        // if (snapshot.hasError) {
+        //   return SomethingWentWrong();
+        // }
+
+        // Once complete, show your application
+        if (snapshot.connectionState == ConnectionState.done) {
+          return MaterialApp(
+            debugShowCheckedModeBanner: false,
+            theme: theme,
+            home: const Onboarding(),
+          );
+        }
+
+        // Otherwise, show something whilst waiting for initialization to complete
+        return Container();
+      },
     );
   }
 }

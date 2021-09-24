@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:to_do/theme/color_custom.dart';
 
-import 'util.dart';
 import 'package:to_do/empty.dart';
 
 class Onboarding extends StatefulWidget {
   const Onboarding({Key? key}) : super(key: key);
 
+  @override
   _OnboardingState createState() => _OnboardingState();
 }
 
@@ -24,7 +25,7 @@ class _OnboardingState extends State<Onboarding> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: Container(
+        child: SizedBox(
           width: MediaQuery.of(context).size.width / 1.2,
           child: Column(
             children: <Widget>[
@@ -42,17 +43,18 @@ class _OnboardingState extends State<Onboarding> {
                     Text(
                       'Reminders made simple',
                       style: TextStyle(
-                          fontSize: 22,
-                          fontWeight: FontWeight.w500,
-                          color: CustomColors.TextHeader),
+                        fontSize: 22,
+                        fontWeight: FontWeight.w500,
+                        color: Theme.of(context).colorScheme.textHeader,
+                      ),
                     ),
-                    SizedBox(height: 15),
+                    const SizedBox(height: 15),
                     Text(
                       'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris pellentesque erat in blandit luctus.',
                       style: TextStyle(
                           fontSize: 17,
                           fontWeight: FontWeight.w400,
-                          color: CustomColors.TextBody,
+                          color: Theme.of(context).colorScheme.textBody,
                           fontFamily: 'opensans'),
                       textAlign: TextAlign.center,
                     ),
@@ -83,28 +85,28 @@ class _OnboardingState extends State<Onboarding> {
                   child: Container(
                     width: MediaQuery.of(context).size.width / 1.4,
                     height: 60,
-                    decoration: const BoxDecoration(
+                    decoration: BoxDecoration(
                       gradient: LinearGradient(
                         colors: <Color>[
-                          CustomColors.GreenLight,
-                          CustomColors.GreenDark,
+                          Theme.of(context).colorScheme.greenLight,
+                          Theme.of(context).colorScheme.greenDark,
                         ],
                       ),
-                      borderRadius: BorderRadius.all(
+                      borderRadius: const BorderRadius.all(
                         Radius.circular(8.0),
                       ),
                       boxShadow: [
                         BoxShadow(
-                          color: CustomColors.GreenShadow,
+                          color: Theme.of(context).colorScheme.greenShadow,
                           blurRadius: 15.0,
                           spreadRadius: 7.0,
-                          offset: Offset(0.0, 0.0),
+                          offset: const Offset(0.0, 0.0),
                         ),
                       ],
                     ),
                     padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
-                    child: Center(
-                      child: const Text(
+                    child: const Center(
+                      child: Text(
                         'Get Started',
                         style: TextStyle(
                             fontSize: 18, fontWeight: FontWeight.w500),

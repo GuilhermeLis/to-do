@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "422779510075",
+    "project_id": "todozin",
+    "storage_bucket": "todozin.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:422779510075:android:855c12ab0afb735ef7ab1e",
+        "android_client_info": {
+          "package_name": "com.example.to_do"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "422779510075-rb9b2j23c61cheprvpbmvmqrh726n0pd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDG1I0mLkEnDmXL4d6blkBFgVRYZbBEDVI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "422779510075-rb9b2j23c61cheprvpbmvmqrh726n0pd.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

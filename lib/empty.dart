@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 
 import 'package:to_do/bottom_navigation.dart';
 import 'package:to_do/fab.dart';
-import 'util.dart';
+import 'package:to_do/theme/color_custom.dart';
 
 class Empty extends StatefulWidget {
   const Empty({Key? key}) : super(key: key);
 
+  @override
   _EmptyState createState() => _EmptyState();
 }
 
@@ -17,7 +18,7 @@ class _EmptyState extends State<Empty> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: Container(
+        child: SizedBox(
           width: MediaQuery.of(context).size.width / 1.2,
           child: Column(
             children: <Widget>[
@@ -35,17 +36,18 @@ class _EmptyState extends State<Empty> {
                     Text(
                       'No tasks',
                       style: TextStyle(
-                          fontSize: 22,
-                          fontWeight: FontWeight.w500,
-                          color: CustomColors.TextHeader),
+                        fontSize: 22,
+                        fontWeight: FontWeight.w500,
+                        color: Theme.of(context).colorScheme.textHeader,
+                      ),
                     ),
-                    SizedBox(height: 15),
+                    const SizedBox(height: 15),
                     Text(
                       'You have no tasks to do.',
                       style: TextStyle(
                           fontSize: 17,
                           fontWeight: FontWeight.w400,
-                          color: CustomColors.TextBody,
+                          color: Theme.of(context).colorScheme.textBody,
                           fontFamily: 'opensans'),
                       textAlign: TextAlign.center,
                     ),
@@ -62,8 +64,8 @@ class _EmptyState extends State<Empty> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: customFab(context),
-      bottomNavigationBar:
-          BottomNavigationBarApp(context, bottomNavigationBarIndex),
+      bottomNavigationBar: BottomNavigationBarApp(
+          context: context, bottomNavigationBarIndex: bottomNavigationBarIndex),
     );
   }
 }
