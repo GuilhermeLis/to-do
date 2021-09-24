@@ -29,9 +29,10 @@ class _TaskState extends State<Task> {
             child: Text(
               'Go jogging with Christin',
               style: TextStyle(
-                  color: Theme.of(context).colorScheme.textGrey,
-                  //fontWeight: FontWeight.w600,
-                  decoration: TextDecoration.lineThrough),
+                color: Theme.of(context).colorScheme.textGrey,
+                //fontWeight: FontWeight.w600,
+                decoration: TextDecoration.lineThrough,
+              ),
             ),
           ),
           Image.asset('assets/images/bell-small.png'),

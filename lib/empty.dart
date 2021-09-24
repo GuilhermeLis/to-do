@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:to_do/bottom_navigation.dart';
 import 'package:to_do/fab.dart';
 import 'package:to_do/theme/color_custom.dart';
+import 'package:to_do/widget/app_bars_custom.dart';
 
 class Empty extends StatefulWidget {
   const Empty({Key? key}) : super(key: key);
@@ -17,6 +18,7 @@ class _EmptyState extends State<Empty> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: const AppBarCustom(),
       body: Center(
         child: SizedBox(
           width: MediaQuery.of(context).size.width / 1.2,

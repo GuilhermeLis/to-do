@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:to_do/theme/color_custom.dart';
 
 ThemeData theme = ThemeData(
-  canvasColor: const Color.fromRGBO(249, 252, 255, 1),
+  canvasColor: greyBackgroundColor,
   fontFamily: 'rubik',
 );

@@ -6,6 +6,7 @@ import 'package:to_do/bottom_navigation.dart';
 import 'package:to_do/fab.dart';
 import 'package:to_do/theme/color_custom.dart';
 import 'package:to_do/util.dart';
+import 'package:to_do/widget/app_bars_custom.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -20,6 +21,7 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: const AppBarCustom(),
       body: SizedBox(
         width: MediaQuery.of(context).size.width,
         child: ListView(

@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 
 import 'package:to_do/onboarding.dart';
 import 'package:to_do/theme/theme.dart';
+import 'package:to_do/utils/routes.dart';
 import 'util.dart';
 
 void main() => runApp(const App());
@@ -44,7 +45,8 @@ class _AppState extends State<App> {
           return MaterialApp(
             debugShowCheckedModeBanner: false,
             theme: theme,
-            home: const Onboarding(),
+            routes: routes,
+            initialRoute: '/',
           );
         }
 
