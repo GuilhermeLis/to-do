@@ -54,7 +54,10 @@ class AppBarCustom extends StatelessWidget implements PreferredSizeWidget {
       bottom: PreferredSize(
         preferredSize: const Size.fromHeight(10),
         child: Container(
-          margin: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+          margin: const EdgeInsets.symmetric(
+            vertical: 15,
+            horizontal: 20,
+          ),
           padding: const EdgeInsets.fromLTRB(15, 5, 15, 0),
           decoration: BoxDecoration(
             color: Theme.of(context).colorScheme.headerGreyLight,
@@ -96,20 +99,24 @@ class AppBarCustom extends StatelessWidget implements PreferredSizeWidget {
                   ),
                 ],
               ),
-              Container(
-                width: MediaQuery.of(context).size.width / 2.9,
-              ),
-              Image.asset(
-                'assets/images/bell-left.png',
-                scale: 1.3,
-              ),
-              Container(
-                margin: const EdgeInsets.only(bottom: 80),
-                child: const Icon(
-                  Icons.clear,
-                  color: Colors.white,
-                  size: 18.0,
-                ),
+              Row(
+                children: [
+                  Image.asset(
+                    'assets/images/bell-left.png',
+                    scale: 1.3,
+                  ),
+                  Container(
+                    margin: const EdgeInsets.only(
+                      bottom: 80,
+                      left: 10,
+                    ),
+                    child: const Icon(
+                      Icons.clear,
+                      color: Colors.white,
+                      size: 18.0,
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
