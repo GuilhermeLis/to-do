@@ -5,6 +5,7 @@ import 'package:to_do/theme/color_custom.dart';
 class Modal {
   mainBottomSheet(BuildContext context) {
     TextEditingController inputController = TextEditingController();
+    TimeOfDay? selectedTime;
     showModalBottomSheet(
       context: context,
       backgroundColor: Colors.transparent,
@@ -83,168 +84,31 @@ class Modal {
                             ),
                           ),
                         ),
-                        const SizedBox(height: 5),
-                        Container(
-                          width: MediaQuery.of(context).size.width / 1.2,
-                          height: 60,
-                          padding: const EdgeInsets.symmetric(vertical: 15),
-                          decoration: BoxDecoration(
-                            border: Border(
-                              top: BorderSide(
-                                width: 1.0,
-                                color: Theme.of(context).colorScheme.greyBorder,
-                              ),
-                              bottom: BorderSide(
-                                width: 1.0,
-                                color: Theme.of(context).colorScheme.greyBorder,
+                        const SizedBox(height: 20),
+                        InkWell(
+                          onTap: () async {
+                            selectedTime = await showTimePicker(
+                              initialTime: TimeOfDay.now(),
+                              context: context,
+                            );
+                          },
+                          child: Container(
+                            margin: const EdgeInsets.only(
+                              bottom: 20,
+                            ),
+                            alignment: Alignment.center,
+                            width: MediaQuery.of(context).size.width / 1.2,
+                            height: 40,
+                            child: Text(
+                              selectedTime != null
+                                  ? selectedTime!.hour.toString() +
+                                      ':' +
+                                      selectedTime!.minute.toString()
+                                  : 'Selecione o seu horáro',
+                              style: const TextStyle(
+                                fontSize: 34,
                               ),
                             ),
-                          ),
-                          child: ListView(
-                            scrollDirection: Axis.horizontal,
-                            shrinkWrap: true,
-                            children: <Widget>[
-                              Center(
-                                child: Row(
-                                  children: <Widget>[
-                                    Container(
-                                      height: 10.0,
-                                      width: 10.0,
-                                      margin: const EdgeInsets.only(right: 4),
-                                      decoration: BoxDecoration(
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .yellowAccent,
-                                        shape: BoxShape.circle,
-                                      ),
-                                    ),
-                                    Container(
-                                      margin: const EdgeInsets.only(right: 10),
-                                      child: const Text('Personal'),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Center(
-                                child: Container(
-                                  margin: const EdgeInsets.only(right: 10),
-                                  child: const Text(
-                                    'Work',
-                                    style: TextStyle(color: Colors.white),
-                                  ),
-                                  padding: const EdgeInsets.symmetric(
-                                      vertical: 5, horizontal: 10),
-                                  decoration: BoxDecoration(
-                                    borderRadius: const BorderRadius.all(
-                                      Radius.circular(5),
-                                    ),
-                                    color:
-                                        Theme.of(context).colorScheme.greenIcon,
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .greenShadow,
-                                        blurRadius: 5.0,
-                                        spreadRadius: 3.0,
-                                        offset: const Offset(0.0, 0.0),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              Center(
-                                child: Row(
-                                  children: <Widget>[
-                                    Container(
-                                      height: 10.0,
-                                      width: 10.0,
-                                      margin: const EdgeInsets.only(right: 4),
-                                      decoration: BoxDecoration(
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .purpleIcon,
-                                        shape: BoxShape.circle,
-                                      ),
-                                    ),
-                                    Container(
-                                      margin: const EdgeInsets.only(right: 10),
-                                      child: const Text('Meeting'),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Center(
-                                child: Row(
-                                  children: <Widget>[
-                                    Container(
-                                      height: 10.0,
-                                      width: 10.0,
-                                      margin: const EdgeInsets.only(right: 4),
-                                      decoration: BoxDecoration(
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .blueIcon,
-                                        shape: BoxShape.circle,
-                                      ),
-                                    ),
-                                    Container(
-                                      margin: const EdgeInsets.only(right: 10),
-                                      child: const Text('Study'),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Center(
-                                child: Row(
-                                  children: <Widget>[
-                                    Container(
-                                      height: 10.0,
-                                      width: 10.0,
-                                      margin: const EdgeInsets.only(right: 4),
-                                      decoration: BoxDecoration(
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .orangeIcon,
-                                        shape: BoxShape.circle,
-                                      ),
-                                    ),
-                                    Container(
-                                      margin: const EdgeInsets.only(right: 10),
-                                      child: const Text('Shopping'),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(height: 20),
-                        SizedBox(
-                          width: MediaQuery.of(context).size.width / 1.2,
-                          child: const Text(
-                            'Choose date',
-                            textAlign: TextAlign.left,
-                            style: TextStyle(fontSize: 12),
-                          ),
-                        ),
-                        const SizedBox(height: 10),
-                        SizedBox(
-                          width: MediaQuery.of(context).size.width / 1.2,
-                          child: Row(
-                            children: const <Widget>[
-                              Text(
-                                'Today, 19:00 - 21:00',
-                                textAlign: TextAlign.left,
-                                style: TextStyle(
-                                    fontSize: 12, fontWeight: FontWeight.w600),
-                              ),
-                              SizedBox(width: 5),
-                              RotatedBox(
-                                quarterTurns: 1,
-                                child: Icon(Icons.chevron_right),
-                              ),
-                            ],
                           ),
                         ),
                         ElevatedButton(
@@ -256,7 +120,9 @@ class Modal {
                                 .add({
                               'active': true,
                               'done': false,
-                              'hour': '08:00 AM',
+                              'hour': selectedTime!.hour.toString() +
+                                  ':' +
+                                  selectedTime!.minute.toString(),
                               'priority': 0,
                               'reminder': inputController.text,
                             }).then(
@@ -282,7 +148,7 @@ class Modal {
                             ),
                           ),
                           child: const Text(
-                            'Add task',
+                            'adicionar tarefa',
                             style: TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.w500,

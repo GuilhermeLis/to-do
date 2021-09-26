@@ -2,10 +2,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import 'package:to_do/onboarding.dart';
 import 'package:to_do/theme/theme.dart';
 import 'package:to_do/utils/routes.dart';
-import 'util.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();

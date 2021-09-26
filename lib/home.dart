@@ -1,13 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-import 'package:flutter_slidable/flutter_slidable.dart';
-
 import 'package:to_do/bottom_navigation.dart';
 import 'package:to_do/fab.dart';
 import 'package:to_do/theme/color_custom.dart';
-import 'package:to_do/util.dart';
-import 'package:to_do/widget/app_bars_custom.dart';
 import 'package:to_do/widget/task.dart';
 
 class Home extends StatefulWidget {
@@ -33,7 +29,6 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const AppBarCustom(),
       body: StreamBuilder<QuerySnapshot>(
         stream: _tasks,
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
