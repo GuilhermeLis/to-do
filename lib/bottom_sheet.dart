@@ -1,13 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-
-import 'package:to_do/home.dart';
 import 'package:to_do/theme/color_custom.dart';
-import 'util.dart';
 
 class Modal {
-  List<String> subTasks = <String>['Call the restaurant ', 'Ask for the date '];
-
   mainBottomSheet(BuildContext context) {
+    TextEditingController inputController = TextEditingController();
     showModalBottomSheet(
       context: context,
       backgroundColor: Colors.transparent,
@@ -15,27 +12,21 @@ class Modal {
       builder: (BuildContext context) {
         return Container(
           height: MediaQuery.of(context).size.height - 80,
-          padding:
-              EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
-          child: Stack(
-            alignment: AlignmentDirectional.topCenter,
+          padding: const EdgeInsets.only(
+            top: 50,
+          ),
+          decoration: const BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.vertical(
+              top: Radius.elliptical(175, 30),
+            ),
+          ),
+          child: Column(
             children: <Widget>[
-              Positioned(
-                top: MediaQuery.of(context).size.height / 25,
-                left: 0,
-                child: Container(
-                  height: MediaQuery.of(context).size.height,
-                  width: MediaQuery.of(context).size.width,
-                  decoration: const BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.vertical(
-                      top: Radius.elliptical(175, 30),
-                    ),
-                  ),
+              Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 50,
                 ),
-              ),
-              Positioned(
-                top: MediaQuery.of(context).size.height / 2 - 340,
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
@@ -71,7 +62,6 @@ class Modal {
                       ),
                     ),
                     Column(
-                      mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
                         const SizedBox(height: 10),
                         const Text(
@@ -83,12 +73,14 @@ class Modal {
                         SizedBox(
                           width: MediaQuery.of(context).size.width / 1.2,
                           child: TextFormField(
-                            initialValue: 'Book a table for dinner ',
+                            controller: inputController,
                             autofocus: true,
                             style: const TextStyle(
                                 fontSize: 22, fontStyle: FontStyle.normal),
-                            decoration:
-                                const InputDecoration(border: InputBorder.none),
+                            decoration: const InputDecoration(
+                              border: InputBorder.none,
+                              hintText: 'Coloque sua tarefa aqui',
+                            ),
                           ),
                         ),
                         const SizedBox(height: 5),
@@ -255,142 +247,48 @@ class Modal {
                             ],
                           ),
                         ),
-                        const SizedBox(height: 10),
-                        RaisedButton(
+                        ElevatedButton(
                           onPressed: () {
-                            subTasks.add('New subtask');
-                            //print(subTasks.toString());
-                          },
-                          textColor: Colors.white,
-                          padding: const EdgeInsets.all(0.0),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8.0),
-                          ),
-                          child: Container(
-                            width: 120,
-                            height: 40,
-                            decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                colors: <Color>[
-                                  Theme.of(context).colorScheme.blueLight,
-                                  Theme.of(context).colorScheme.blueDark,
-                                ],
-                              ),
-                              borderRadius: const BorderRadius.all(
-                                Radius.circular(8.0),
-                              ),
-                              boxShadow: [
-                                BoxShadow(
-                                  color:
-                                      Theme.of(context).colorScheme.blueShadow,
-                                  blurRadius: 2.0,
-                                  spreadRadius: 1.0,
-                                  offset: Offset(0.0, 0.0),
-                                ),
-                              ],
-                            ),
-                            padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
-                            child: const Center(
-                              child: Text(
-                                'Add subtask',
-                                style: TextStyle(
-                                    fontSize: 12, fontWeight: FontWeight.w500),
-                              ),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 10),
-                        SizedBox(
-                          width: MediaQuery.of(context).size.width / 1.2,
-                          height: 150,
-                          child: ListView.builder(
-                            itemCount: subTasks.length,
-                            itemBuilder: (BuildContext context, int index) {
-                              return Container(
-                                margin: const EdgeInsets.only(bottom: 5.0),
-                                child: TextFormField(
-                                  initialValue: subTasks[index],
-                                  autofocus: false,
-                                  style: TextStyle(
-                                    fontSize: 18,
-                                    fontStyle: FontStyle.normal,
-                                    color: Colors.grey[850],
-                                  ),
-                                  decoration: const InputDecoration(
-                                    border: InputBorder.none,
-                                    enabledBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                        color: Colors.grey,
-                                        width: 1.0,
-                                      ),
-                                      borderRadius: BorderRadius.all(
-                                        Radius.circular(50.0),
-                                      ),
-                                    ),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                        color: Colors.blue,
-                                        width: 2.0,
-                                      ),
-                                      borderRadius: BorderRadius.all(
-                                        Radius.circular(50.0),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              );
-                            },
-                          ),
-                        ),
-                        const SizedBox(height: 25),
-                        RaisedButton(
-                          onPressed: () {
-                            Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const Home()),
+                            FirebaseFirestore.instance
+                                .collection('tasks')
+                                .doc('main')
+                                .collection('tasks')
+                                .add({
+                              'active': true,
+                              'done': false,
+                              'hour': '08:00 AM',
+                              'priority': 0,
+                              'reminder': inputController.text,
+                            }).then(
+                              (value) => Navigator.pop(context),
                             );
-                            // Navigator.pop(context);
                           },
-                          textColor: Colors.white,
-                          padding: const EdgeInsets.all(0.0),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8.0),
-                          ),
-                          child: Container(
-                            width: MediaQuery.of(context).size.width / 1.2,
-                            height: 60,
-                            decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                colors: <Color>[
-                                  Theme.of(context).colorScheme.blueLight,
-                                  Theme.of(context).colorScheme.blueDark,
-                                ],
+                          style: ButtonStyle(
+                            textStyle: MaterialStateProperty.all<TextStyle>(
+                              TextStyle(
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .greyBackground,
                               ),
-                              borderRadius: const BorderRadius.all(
-                                Radius.circular(8.0),
-                              ),
-                              boxShadow: [
-                                BoxShadow(
-                                  color:
-                                      Theme.of(context).colorScheme.blueShadow,
-                                  blurRadius: 2.0,
-                                  spreadRadius: 1.0,
-                                  offset: const Offset(0.0, 0.0),
-                                ),
-                              ],
                             ),
-                            padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
-                            child: const Center(
-                              child: Text(
-                                'Add task',
-                                style: TextStyle(
-                                    fontSize: 18, fontWeight: FontWeight.w500),
+                            minimumSize: MaterialStateProperty.all<Size>(
+                              Size(MediaQuery.of(context).size.width, 50),
+                            ),
+                            shape: MaterialStateProperty.all<
+                                RoundedRectangleBorder>(
+                              RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8.0),
                               ),
+                            ),
+                          ),
+                          child: const Text(
+                            'Add task',
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w500,
                             ),
                           ),
                         ),
-                        const SizedBox(height: 20),
                       ],
                     ),
                   ],

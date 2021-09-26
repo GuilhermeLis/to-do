@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -7,6 +8,7 @@ import 'package:to_do/fab.dart';
 import 'package:to_do/theme/color_custom.dart';
 import 'package:to_do/util.dart';
 import 'package:to_do/widget/app_bars_custom.dart';
+import 'package:to_do/widget/task.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -17,435 +19,102 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   final bottomNavigationBarIndex = 0;
+  late final Stream<QuerySnapshot> _tasks;
+  @override
+  void initState() {
+    _tasks = FirebaseFirestore.instance
+        .collection('tasks')
+        .doc('main')
+        .collection('tasks')
+        .snapshots();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const AppBarCustom(),
-      body: SizedBox(
-        width: MediaQuery.of(context).size.width,
-        child: ListView(
-          scrollDirection: Axis.vertical,
-          children: <Widget>[
-            Container(
-              margin: const EdgeInsets.only(top: 15, left: 20, bottom: 15),
-              child: Text(
-                'Today',
-                style: TextStyle(
-                  fontSize: 13,
-                  fontWeight: FontWeight.w600,
-                  color: Theme.of(context).colorScheme.textSubHeader,
-                ),
+      body: StreamBuilder<QuerySnapshot>(
+        stream: _tasks,
+        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          if (snapshot.hasError) {
+            return SizedBox(
+              width: MediaQuery.of(context).size.width,
+              child: Column(
+                children: <Widget>[
+                  Expanded(
+                    flex: 8,
+                    child: Hero(
+                      tag: 'Clipboard',
+                      child: Image.asset('assets/images/Clipboard-empty.png'),
+                    ),
+                  ),
+                  Expanded(
+                    flex: 3,
+                    child: Column(
+                      children: <Widget>[
+                        Text(
+                          'No tasks',
+                          style: TextStyle(
+                            fontSize: 22,
+                            fontWeight: FontWeight.w500,
+                            color: Theme.of(context).colorScheme.textHeader,
+                          ),
+                        ),
+                        const SizedBox(height: 15),
+                        Text(
+                          'You have no tasks to do.',
+                          style: TextStyle(
+                              fontSize: 17,
+                              fontWeight: FontWeight.w400,
+                              color: Theme.of(context).colorScheme.textBody,
+                              fontFamily: 'opensans'),
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
+                    ),
+                  ),
+                  Expanded(
+                    flex: 1,
+                    child: Container(),
+                  )
+                ],
               ),
-            ),
+            );
+          }
 
-            // Slidable(
-            //   actionPane: SlidableDrawerActionPane(),
-            //   actionExtentRatio: 0.25,
-            //   child: Container(
-            //     margin: EdgeInsets.fromLTRB(20, 0, 20, 15),
-            //     padding: EdgeInsets.fromLTRB(5, 13, 5, 13),
-            //     child: Row(
-            //       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            //       children: <Widget>[
-            //         Image.asset('assets/images/checked-empty.png'),
-            //         Text(
-            //           '08.00 AM',
-            //           style: TextStyle(color: CustomColors.TextGrey),
-            //         ),
-            //         Container(
-            //           width: 180,
-            //           child: Text(
-            //             'Send project file',
-            //             style: TextStyle(
-            //                 color: CustomColors.TextHeader,
-            //                 fontWeight: FontWeight.w600),
-            //           ),
-            //         ),
-            //         Image.asset('assets/images/bell-small.png'),
-            //       ],
-            //     ),
-            //     decoration: BoxDecoration(
-            //       gradient: LinearGradient(
-            //         stops: const [0.015, 0.015],
-            //         colors: const [CustomColors.GreenIcon, Colors.white],
-            //       ),
-            //       borderRadius: BorderRadius.all(
-            //         Radius.circular(5.0),
-            //       ),
-            //       boxShadow: const [
-            //         BoxShadow(
-            //           color: CustomColors.GreyBorder,
-            //           blurRadius: 10.0,
-            //           spreadRadius: 5.0,
-            //           offset: Offset(0.0, 0.0),
-            //         ),
-            //       ],
-            //     ),
-            //   ),
-            //   secondaryActions: <Widget>[
-            //     SlideAction(
-            //       child: Container(
-            //         padding: const EdgeInsets.only(bottom: 10),
-            //         child: Container(
-            //           height: 35,
-            //           width: 35,
-            //           decoration: BoxDecoration(
-            //               borderRadius: BorderRadius.circular(50),
-            //               color: CustomColors.TrashRedBackground),
-            //           child: Image.asset('assets/images/trash.png'),
-            //         ),
-            //       ),
-            //       onTap: () => print('Delete'),
-            //     ),
-            //   ],
-            // ),
-            // Container(
-            //   margin: const EdgeInsets.fromLTRB(20, 0, 20, 15),
-            //   padding: const EdgeInsets.fromLTRB(5, 13, 5, 13),
-            //   child: Row(
-            //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            //     children: <Widget>[
-            //       Image.asset('assets/images/checked-empty.png'),
-            //       const Text(
-            //         '10.00 AM',
-            //         style: TextStyle(color: CustomColors.TextGrey),
-            //       ),
-            //       const SizedBox(
-            //         width: 180,
-            //         child: Text(
-            //           'Meeting with client',
-            //           style: TextStyle(
-            //               color: CustomColors.TextHeader,
-            //               fontWeight: FontWeight.w600),
-            //         ),
-            //       ),
-            //       Image.asset('assets/images/bell-small-yellow.png'),
-            //     ],
-            //   ),
-            //   decoration: const BoxDecoration(
-            //     gradient: LinearGradient(
-            //       stops: [0.015, 0.015],
-            //       colors: [CustomColors.PurpleIcon, Colors.white],
-            //     ),
-            //     borderRadius: BorderRadius.all(
-            //       Radius.circular(5.0),
-            //     ),
-            //     boxShadow: [
-            //       BoxShadow(
-            //         color: CustomColors.GreyBorder,
-            //         blurRadius: 10.0,
-            //         spreadRadius: 5.0,
-            //         offset: Offset(0.0, 0.0),
-            //       ),
-            //     ],
-            //   ),
-            // ),
-            // Container(
-            //   margin: const EdgeInsets.fromLTRB(20, 0, 20, 15),
-            //   padding: const EdgeInsets.fromLTRB(5, 13, 5, 13),
-            //   child: Row(
-            //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            //     children: <Widget>[
-            //       Image.asset('assets/images/checked-empty.png'),
-            //       const Text(
-            //         '13.00 PM',
-            //         style: TextStyle(color: CustomColors.TextGrey),
-            //       ),
-            //       const SizedBox(
-            //         width: 180,
-            //         child: Text(
-            //           'Email client',
-            //           style: TextStyle(
-            //               color: CustomColors.TextHeader,
-            //               fontWeight: FontWeight.w600),
-            //         ),
-            //       ),
-            //       Image.asset('assets/images/bell-small.png'),
-            //     ],
-            //   ),
-            //   decoration: const BoxDecoration(
-            //     gradient: LinearGradient(
-            //       stops: [0.015, 0.015],
-            //       colors: [CustomColors.GreenIcon, Colors.white],
-            //     ),
-            //     borderRadius: BorderRadius.all(
-            //       Radius.circular(5.0),
-            //     ),
-            //     boxShadow: [
-            //       BoxShadow(
-            //         color: CustomColors.GreyBorder,
-            //         blurRadius: 10.0,
-            //         spreadRadius: 5.0,
-            //         offset: Offset(0.0, 0.0),
-            //       ),
-            //     ],
-            //   ),
-            // ),
-            // Container(
-            //   margin: const EdgeInsets.only(left: 20, bottom: 15),
-            //   child: const Text(
-            //     'Tomorrow',
-            //     style: TextStyle(
-            //         fontSize: 13,
-            //         fontWeight: FontWeight.w600,
-            //         color: CustomColors.TextSubHeader),
-            //   ),
-            // ),
-            // Container(
-            //   margin: const EdgeInsets.fromLTRB(20, 0, 20, 15),
-            //   padding: const EdgeInsets.fromLTRB(5, 13, 5, 13),
-            //   child: Row(
-            //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            //     children: <Widget>[
-            //       Image.asset('assets/images/checked-empty.png'),
-            //       const Text(
-            //         '07.00 AM',
-            //         style: TextStyle(color: CustomColors.TextGrey),
-            //       ),
-            //       const SizedBox(
-            //         width: 180,
-            //         child: Text(
-            //           'Morning yoga',
-            //           style: TextStyle(
-            //               color: CustomColors.TextHeader,
-            //               fontWeight: FontWeight.w600),
-            //         ),
-            //       ),
-            //       Image.asset('assets/images/bell-small.png'),
-            //     ],
-            //   ),
-            //   decoration: BoxDecoration(
-            //     gradient: const LinearGradient(
-            //       stops: [0.015, 0.015],
-            //       colors: [CustomColors.YellowIcon, Colors.white],
-            //     ),
-            //     borderRadius: BorderRadius.all(
-            //       Radius.circular(5.0),
-            //     ),
-            //     boxShadow: const [
-            //       BoxShadow(
-            //         color: CustomColors.GreyBorder,
-            //         blurRadius: 10.0,
-            //         spreadRadius: 5.0,
-            //         offset: Offset(0.0, 0.0),
-            //       ),
-            //     ],
-            //   ),
-            // ),
-            // Container(
-            //   margin: EdgeInsets.fromLTRB(20, 0, 20, 15),
-            //   padding: EdgeInsets.fromLTRB(5, 13, 5, 13),
-            //   child: Row(
-            //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            //     children: <Widget>[
-            //       Image.asset('assets/images/checked-empty.png'),
-            //       Text(
-            //         '08.00 AM',
-            //         style: TextStyle(color: CustomColors.TextGrey),
-            //       ),
-            //       Container(
-            //         width: 180,
-            //         child: Text(
-            //           'Sending project file',
-            //           style: TextStyle(
-            //               color: CustomColors.TextHeader,
-            //               fontWeight: FontWeight.w600),
-            //         ),
-            //       ),
-            //       Image.asset('assets/images/bell-small.png'),
-            //     ],
-            //   ),
-            //   decoration: BoxDecoration(
-            //     gradient: LinearGradient(
-            //       stops: const [0.015, 0.015],
-            //       colors: const [CustomColors.GreenIcon, Colors.white],
-            //     ),
-            //     borderRadius: BorderRadius.all(
-            //       Radius.circular(5.0),
-            //     ),
-            //     boxShadow: const [
-            //       BoxShadow(
-            //         color: CustomColors.GreyBorder,
-            //         blurRadius: 10.0,
-            //         spreadRadius: 5.0,
-            //         offset: Offset(0.0, 0.0),
-            //       ),
-            //     ],
-            //   ),
-            // ),
-            // Container(
-            //   margin: EdgeInsets.fromLTRB(20, 0, 20, 15),
-            //   padding: EdgeInsets.fromLTRB(5, 13, 5, 13),
-            //   child: Row(
-            //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            //     children: <Widget>[
-            //       Image.asset('assets/images/checked-empty.png'),
-            //       Text(
-            //         '10.00 AM',
-            //         style: TextStyle(color: CustomColors.TextGrey),
-            //       ),
-            //       Container(
-            //         width: 180,
-            //         child: Text(
-            //           'Meeting with client',
-            //           style: TextStyle(
-            //               color: CustomColors.TextHeader,
-            //               fontWeight: FontWeight.w600),
-            //         ),
-            //       ),
-            //       Image.asset('assets/images/bell-small-yellow.png'),
-            //     ],
-            //   ),
-            //   decoration: BoxDecoration(
-            //     gradient: LinearGradient(
-            //       stops: const [0.015, 0.015],
-            //       colors: const [CustomColors.PurpleIcon, Colors.white],
-            //     ),
-            //     borderRadius: BorderRadius.all(
-            //       Radius.circular(5.0),
-            //     ),
-            //     boxShadow: const [
-            //       BoxShadow(
-            //         color: CustomColors.GreyBorder,
-            //         blurRadius: 10.0,
-            //         spreadRadius: 5.0,
-            //         offset: Offset(0.0, 0.0),
-            //       ),
-            //     ],
-            //   ),
-            // ),
-            // Container(
-            //   margin: EdgeInsets.fromLTRB(20, 0, 20, 15),
-            //   padding: EdgeInsets.fromLTRB(5, 13, 5, 13),
-            //   child: Row(
-            //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            //     children: <Widget>[
-            //       Image.asset('assets/images/checked-empty.png'),
-            //       Text(
-            //         '13.00 PM',
-            //         style: TextStyle(color: CustomColors.TextGrey),
-            //       ),
-            //       Container(
-            //         width: 180,
-            //         child: Text(
-            //           'Email client',
-            //           style: TextStyle(
-            //               color: CustomColors.TextHeader,
-            //               fontWeight: FontWeight.w600),
-            //         ),
-            //       ),
-            //       Image.asset('assets/images/bell-small.png'),
-            //     ],
-            //   ),
-            //   decoration: BoxDecoration(
-            //     gradient: LinearGradient(
-            //       stops: const [0.015, 0.015],
-            //       colors: const [CustomColors.GreenIcon, Colors.white],
-            //     ),
-            //     borderRadius: BorderRadius.all(
-            //       Radius.circular(5.0),
-            //     ),
-            //     boxShadow: const [
-            //       BoxShadow(
-            //         color: CustomColors.GreyBorder,
-            //         blurRadius: 10.0,
-            //         spreadRadius: 5.0,
-            //         offset: Offset(0.0, 0.0),
-            //       ),
-            //     ],
-            //   ),
-            // ),
-            // Container(
-            //   margin: EdgeInsets.fromLTRB(20, 0, 20, 15),
-            //   padding: EdgeInsets.fromLTRB(5, 13, 5, 13),
-            //   child: Row(
-            //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            //     children: <Widget>[
-            //       Image.asset('assets/images/checked-empty.png'),
-            //       Text(
-            //         '13.00 PM',
-            //         style: TextStyle(color: CustomColors.TextGrey),
-            //       ),
-            //       Container(
-            //         width: 180,
-            //         child: Text(
-            //           'Meeting with client',
-            //           style: TextStyle(
-            //               color: CustomColors.TextHeader,
-            //               fontWeight: FontWeight.w600),
-            //         ),
-            //       ),
-            //       Image.asset('assets/images/bell-small-yellow.png'),
-            //     ],
-            //   ),
-            //   decoration: BoxDecoration(
-            //     gradient: LinearGradient(
-            //       stops: const [0.015, 0.015],
-            //       colors: const [CustomColors.PurpleIcon, Colors.white],
-            //     ),
-            //     borderRadius: BorderRadius.all(
-            //       Radius.circular(5.0),
-            //     ),
-            //     boxShadow: const [
-            //       BoxShadow(
-            //         color: CustomColors.GreyBorder,
-            //         blurRadius: 10.0,
-            //         spreadRadius: 5.0,
-            //         offset: Offset(0.0, 0.0),
-            //       ),
-            //     ],
-            //   ),
-            // ),
-            // Container(
-            //   margin: EdgeInsets.fromLTRB(20, 0, 20, 15),
-            //   padding: EdgeInsets.fromLTRB(5, 13, 5, 13),
-            //   child: Row(
-            //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            //     children: <Widget>[
-            //       Image.asset('assets/images/checked-empty.png'),
-            //       Text(
-            //         '13.00 PM',
-            //         style: TextStyle(color: CustomColors.TextGrey),
-            //       ),
-            //       Container(
-            //         width: 180,
-            //         child: Text(
-            //           'Email client',
-            //           style: TextStyle(
-            //               color: CustomColors.TextHeader,
-            //               fontWeight: FontWeight.w600),
-            //         ),
-            //       ),
-            //       Image.asset('assets/images/bell-small.png'),
-            //     ],
-            //   ),
-            //   decoration: BoxDecoration(
-            //     gradient: LinearGradient(
-            //       stops: const [0.015, 0.015],
-            //       colors: const [CustomColors.GreenIcon, Colors.white],
-            //     ),
-            //     borderRadius: BorderRadius.all(
-            //       Radius.circular(5.0),
-            //     ),
-            //     boxShadow: const [
-            //       BoxShadow(
-            //         color: CustomColors.GreyBorder,
-            //         blurRadius: 10.0,
-            //         spreadRadius: 5.0,
-            //         offset: Offset(0.0, 0.0),
-            //       ),
-            //     ],
-            //   ),
-            // ),
-            const SizedBox(height: 15)
-          ],
-        ),
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Text("Loading");
+          }
+
+          return Padding(
+            padding: const EdgeInsets.only(
+              top: 20,
+            ),
+            child: ListView(
+              children: snapshot.data!.docs.map((DocumentSnapshot document) {
+                Map<String, dynamic> data =
+                    document.data()! as Map<String, dynamic>;
+                return data['active']
+                    ? Task(
+                        id: document.id,
+                        time: data['hour'] ?? '',
+                        reminder: data['reminder'] ?? '',
+                        done: data['done'] ?? false,
+                        priority: data['priority'] ?? 0,
+                      )
+                    : Container();
+              }).toList(),
+            ),
+          );
+        },
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: customFab(context),
       bottomNavigationBar: BottomNavigationBarApp(
-          context: context, bottomNavigationBarIndex: bottomNavigationBarIndex),
+        context: context,
+        bottomNavigationBarIndex: bottomNavigationBarIndex,
+      ),
     );
   }
 }

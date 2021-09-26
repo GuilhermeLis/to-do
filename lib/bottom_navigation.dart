@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-
-import 'package:to_do/home.dart';
-import 'package:to_do/task.dart';
 import 'package:to_do/theme/color_custom.dart';
 
 class BottomNavigationBarApp extends StatelessWidget {
@@ -12,11 +9,12 @@ class BottomNavigationBarApp extends StatelessWidget {
       : super(key: key);
 
   void onTabTapped(int index) {
-    Navigator.of(context).push(
-      MaterialPageRoute<Null>(builder: (BuildContext context) {
-        return (index == 1) ? Task() : Home();
-      }),
-    );
+    if (index == 0) {
+      Navigator.of(context).pushNamedAndRemoveUntil('/', (route) => false);
+    }
+    if (index == 1) {
+      Navigator.of(context).pushNamedAndRemoveUntil('/task', (route) => false);
+    }
   }
 
   @override

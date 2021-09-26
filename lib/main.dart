@@ -7,7 +7,10 @@ import 'package:to_do/theme/theme.dart';
 import 'package:to_do/utils/routes.dart';
 import 'util.dart';
 
-void main() => runApp(const App());
+void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  runApp(const App());
+}
 
 class App extends StatefulWidget {
   const App({Key? key}) : super(key: key);
@@ -36,9 +39,9 @@ class _AppState extends State<App> {
       future: _initialization,
       builder: (context, snapshot) {
         // Check for errors
-        // if (snapshot.hasError) {
-        //   return SomethingWentWrong();
-        // }
+        if (snapshot.hasError) {
+          return const Text('deu merda');
+        }
 
         // Once complete, show your application
         if (snapshot.connectionState == ConnectionState.done) {
